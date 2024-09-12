@@ -11,6 +11,41 @@ public class Roshambo {
         PAPER = "_",
         SCISSORS = "X";
 
+        public static void main(String[] args) throws Exception {
+            // Set up the tournament with players making random signs
+    
+            int gameSize = 60;  // Try increasing this number for extra fun!
+            List<String> allHandShapes = List.of(SCISSORS, ROCK, PAPER);
+            List<String> players = new ArrayList<>();
+            Random rand = new Random();
+            for (int i = 0; i < gameSize; i++) {
+                players.add(
+                    allHandShapes.get(
+                        rand.nextInt(allHandShapes.size())));
+            }
+    
+            // Play the tournament
+    
+            while (true) {
+                // Print the state of the players
+                System.out.print("\u001b[H");   // Go back to top of terminal
+                System.out.print("\u001b[2J");  // Clear terminal
+                System.out.println(String.join("", players));
+    
+                // Play one round
+                List<String> newPlayers = playOneRound(players);
+    
+                // If nothing changed, we're done
+                if (newPlayers.equals(players)) {
+                    break;
+                }
+                players = newPlayers;
+    
+                // Pause to make animation visible
+                Thread.sleep(80);
+            }
+        }
+    
     /**
      * Determines who wins in a 2-player game of Roshambo.
      * 
@@ -44,7 +79,17 @@ public class Roshambo {
     public static List<String> playOneRound(List<String> handShapes) {
        String shapeToLeft = handShapes.get(handShapes.size()-1);
        ArrayList<String> result = new ArrayList<String>();
-        return handShapes;
+       for(String x: handShapes){
+        int num = compareShapes(shapeToLeft, x);
+        if(num == -1){
+            result.add(shapeToLeft);
+        }
+        else{
+            result.add(x);
+        }
+        shapeToLeft = x;
+       }
+        return result;
     }
 
 }
